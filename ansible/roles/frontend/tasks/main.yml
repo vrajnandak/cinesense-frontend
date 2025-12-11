@@ -1,0 +1,22 @@
+---
+- name: Render deployment manifest
+  template:
+    src: deployment.yaml.j2
+    dest: /tmp/frontend-deployment.yaml
+
+- name: Render service manifest
+  template:
+    src: service.yaml.j2
+    dest: /tmp/frontend-service.yaml
+
+- name: Apply service manifest
+  command: kubectl apply -f /tmp/frontend-service.yaml
+
+- name: Apply deployment manifest
+  command: kubectl apply -f /tmp/frontend-deployment.yaml
+
+- name: Wait for rollout
+  command: kubectl -n {{ namespace }} rollout status deployment/frontend --timeout=120s
+  register: rollout_result
+  failed_when: rollout_result.rc != 0
+

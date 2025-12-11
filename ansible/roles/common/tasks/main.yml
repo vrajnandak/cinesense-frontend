@@ -1,0 +1,33 @@
+---
+- name: Check if minikube is installed
+  command: which minikube
+  ignore_errors: yes
+  register: minikube_check
+
+- name: Fail if minikube is not installed
+  fail:
+    msg: "minikube is not installed. Install it before deployment."
+  when: minikube_check.rc != 0
+
+- name: Check minikube status
+  command: minikube status --output=json
+  register: minikube_status
+  ignore_errors: yes
+
+- name: Start minikube if not running
+  command: minikube start --driver=docker
+  when: "'Running' not in minikube_status.stdout"
+  register: minikube_started
+
+- name: Ensure kubectl points to minikube cluster
+  command: minikube update-context
+
+- name: Ensure namespace exists
+  command: kubectl get namespace {{ namespace }}
+  register: ns_check
+  ignore_errors: yes
+
+- name: Create namespace if missing
+  command: kubectl create namespace {{ namespace }}
+  when: ns_check.rc != 0
+

@@ -1,0 +1,11 @@
+- name: Deploying frontend with Kubernetes
+  hosts: localhost 
+  gather_facts: false
+
+  vars:
+    namespace: "{{ namespace | default('frontend') }}"
+    image: "{{ image | default('movie-frontend:latest') }}"
+
+  roles:
+    - common
+    - frontend
