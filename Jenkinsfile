@@ -2,23 +2,14 @@ pipeline {
     agent any
 
     environment {
-        REGISTRY = "mandy943"
-        IMAGE_NAME = "mandy943/cinesense-frontend-image"
+        REGISTRY = "vrajnandak"
+        IMAGE_NAME = "vrajnandak/cinesense-frontend-image"
         TAG = "latest"
-	DOCKERHUB_CREDENTIALS = "dockerhub-cred-frontend"
+	DOCKERHUB_CREDENTIALS = "dockerhub-cinesense"
         ANSIBLE_PLAYBOOK = "deploy.yaml"
     }
 
     stages {
-
-/*
-	stage('Checkout SCM') {
-            steps {
-		echo 'Cloning repository...'
-		git branch: 'main', url: 'https://github.com/Mandy943/cinesense-frontend.git'
-            }
-        }
-*/
 
 	stage('Check Tools') {
 	    steps {
