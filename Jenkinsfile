@@ -56,15 +56,14 @@ pipeline {
         stage('Deploy via Ansible') {
 	    steps {
 	        script {
-                    echo "Deploying frontend via Ansible..."
+		    withCredentials([string(credentialsId: 'ansible-frontendvault-pass', variable: 'VAULT_PASS')]) {
+                    	echo "Deploying frontend via Ansible..."
 
-                    // Run the ansible playbook locally on the Jenkins agent
-                    sh """
-                        ansible-playbook ansible/frontend-deployment.yml \
-                        -i localhost, \
-                        --connection=local \
-                        --extra-vars "image=${IMAGE_NAME}:${TAG} namespace=frontend"
-                    """
+                    	// Run the ansible playbook locally on the Jenkins agent
+		     	sh '''
+			    ansible-playbook -i ansible/inventory.ini ansible/site.yml --vault-password-file <(echo "$VAULT_PASS")
+		    	'''
+		    }
                 }
             }
         }

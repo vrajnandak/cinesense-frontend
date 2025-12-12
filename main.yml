@@ -5,12 +5,6 @@
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/namespace.yml.j2') }}"
 
-- name: Apply frontend secret
-  kubernetes.core.k8s:
-    kubeconfig: "{{ kubeconfig }}"
-    state: present
-    definition: "{{ lookup('template', 'roles/frontend/templates/frontend-secret.yaml') }}"
-
 - name: Ensure frontend ResourceQuota exists
   community.kubernetes.k8s:
     kubeconfig: "{{ kubeconfig }}"
@@ -46,17 +40,3 @@
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/networkpolicy.yml.j2') }}"
-
-- name: Force rollout of frontend deployment
-  community.kubernetes.k8s:
-    kubeconfig: "{{ kubeconfig }}"
-    state: present
-    kind: Deployment
-    namespace: "{{ namespace }}"
-    name: "{{ deployment_name }}"
-    definition: {}
-  register: frontend_deploy
-
-- name: Restart frontend pods if updated
-  command: kubectl rollout restart deployment "{{ deployment_name }}" -n "{{ namespace }}"
-  when: frontend_deploy.changed

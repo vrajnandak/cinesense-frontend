@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Replace with your OMDb API key
-const API_KEY = "faa1f45c";
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 // Add 100 movie titles here
 const MOVIE_TITLES = [
