@@ -53,20 +53,24 @@ pipeline {
             }
         }
 
-        stage('Deploy via Ansible') {
+	stage('Deploy via Ansible') {
 	    steps {
-	        script {
-		    withCredentials([string(credentialsId: 'ansible-frontendvault-pass', variable: 'VAULT_PASS')]) {
-                    	echo "Deploying frontend via Ansible..."
-
-                    	// Run the ansible playbook locally on the Jenkins agent
-		     	sh '''
-			    ansible-playbook -i ansible/inventory.ini ansible/site.yml --vault-password-file <(echo "$VAULT_PASS")
-		    	'''
+		withCredentials([string(credentialsId: 'ansible-frontendvault-pass', variable: 'VAULT_PASS')]) {
+		    script {
+			echo "Deploying frontend via Ansible..."
+			
+			// Write vault password to a temp file and use it
+			sh '''
+			    VAULT_FILE=$(mktemp)
+			    echo "$VAULT_PASS" > $VAULT_FILE
+			    ansible-playbook -i ansible/inventory.ini ansible/site.yml --vault-password-file $VAULT_FILE
+			    rm -f $VAULT_FILE
+			'''
 		    }
-                }
-            }
-        }
+		}
+	    }
+	}
+
     }
 
     post {
