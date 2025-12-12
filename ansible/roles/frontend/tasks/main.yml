@@ -6,6 +6,13 @@
     definition: "{{ lookup('template', 'roles/frontend/templates/namespace.yml.j2') }}"
     verify_ssl: no
 
+- name: Ensure frontend ResourceQuota exists
+  community.kubernetes.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    definition: "{{ lookup('template', 'roles/frontend/templates/resourcequota.yml.j2') }}"
+    verify_ssl: no
+
 - name: Apply frontend secret
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
@@ -13,11 +20,11 @@
     definition: "{{ lookup('template', 'roles/frontend/templates/frontend-secret.yaml') }}"
     verify_ssl: no
 
-- name: Ensure frontend ResourceQuota exists
-  community.kubernetes.k8s:
+- name: Apply frontend configmap 
+  kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
-    definition: "{{ lookup('template', 'roles/frontend/templates/resourcequota.yml.j2') }}"
+    definition: "{{ lookup('template', 'roles/frontend/templates/frontend-configmap.yaml') }}"
     verify_ssl: no
 
 - name: Apply frontend Deployment

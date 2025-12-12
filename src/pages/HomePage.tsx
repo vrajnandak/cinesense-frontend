@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Replace with your OMDb API key
-const API_KEY = import.meta.env.VITE_API_KEY;
+//const API_KEY = import.meta.env.VITE_API_KEY;
 
 // Add 100 movie titles here
 const MOVIE_TITLES = [
@@ -30,6 +30,15 @@ interface Movie {
 export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
+  const [API_KEY, setAPIKey] = useState("");
+  useEffect(() => {
+	  fetch('/config.json")
+		.then((r) => r.json())
+		.then((cfg) => {
+			console.log("Loaded API KEY:", cfg.apiKey);
+			setAPIKey(cfg.apiKey);
+		});
+  }, []);
 
   // Modal state
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);

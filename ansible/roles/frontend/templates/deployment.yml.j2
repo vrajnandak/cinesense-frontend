@@ -16,18 +16,40 @@ spec:
         app: {{ labels.app }}
         tier: frontend
     spec:
+
+      # --- Init container --- 
+      # Writes runtime config.json containing the API key
+      initContainers:
+        - name: generate-config
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              echo "Generating config.json"
+              cat <<EOF > /config/config.json
+              {
+                "apiKey": "{{ react_api_key }}"
+              }
+              EOF
+          volumeMounts:
+            - name: frontend-config-volume
+              mountPath: /config
+
       containers:
         - name: {{ app_name }}-container
           image: {{ image }}
           imagePullPolicy: Always
+
           ports:
             - containerPort: {{ container_port }}
-          env:
-            - name: VITE_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: frontend-api-secret
-                  key: API_KEY
+
+          # React CANNOT read env vars. Use mounted config.json instead.
+          volumeMounts:
+            - name: frontend-config-volume
+              mountPath: /usr/share/nginx/html/config.json
+              subPath: config.json
+
           resources:
             requests:
               cpu: "{{ resources.requests.cpu }}"
@@ -35,3 +57,7 @@ spec:
             limits:
               cpu: "{{ resources.limits.cpu }}"
               memory: "{{ resources.limits.memory }}"
+
+      volumes:
+        - name: frontend-config-volume
+          emptyDir: {}
