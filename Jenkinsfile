@@ -6,7 +6,7 @@ pipeline {
         IMAGE_NAME = "vrajnandak/cinesense-frontend-image"
         TAG = "latest"
 	DOCKERHUB_CREDENTIALS = "dockerhub-cinesense"
-	ANSIBLE_ENV="/var/lib/jenkins/.ansible-venv"
+	ANSIBLE_VENV="/var/lib/jenkins/.ansible-venv"
     }
 
     stages {
