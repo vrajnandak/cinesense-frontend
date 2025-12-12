@@ -69,7 +69,7 @@ export default function App() {
     try {
       setLoadingRec(true);
       const res = await fetch(
-        `http://backend-service:3001/recommend?title=${encodeURIComponent(title)}`
+        `http://cinesense-backend-svc.cinesense-backend.svc.cluster.local:3001/recommend?title=${encodeURIComponent(title)}`
       );
 
       const data = await res.json();
