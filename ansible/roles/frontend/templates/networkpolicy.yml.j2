@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: {{ networkpolicy_name }}
-  namespace: {{ namespace }}
+  namespace: {{ namespace_name }}
 spec:
   podSelector:
     matchLabels:
@@ -13,7 +13,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              name: {{ namespace }}
+              name: {{ namespace_name }}
         - podSelector:
             matchLabels:
               app: "{{ name_prefix }}-ingress-allow"   # ingress service (label below) allowed

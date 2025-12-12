@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: {{ resourcequota_name }}
-  namespace: {{ namespace }}
+  namespace: {{ namespace_name }}
 spec:
   hard:
     pods: "10"

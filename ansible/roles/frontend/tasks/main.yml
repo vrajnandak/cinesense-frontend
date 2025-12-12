@@ -52,11 +52,11 @@
     kubeconfig: "{{ kubeconfig }}"
     state: present
     kind: Deployment
-    namespace: "{{ namespace }}"
+    namespace: "{{ namespace_name }}"
     name: "{{ deployment_name }}"
     definition: {}
   register: frontend_deploy
 
 - name: Restart frontend pods if updated
-  command: kubectl rollout restart deployment "{{ deployment_name }}" -n "{{ namespace }}"
+  command: kubectl rollout restart deployment "{{ deployment_name }}" -n "{{ namespace_name }}"
   when: frontend_deploy.changed

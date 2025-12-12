@@ -1,4 +1,4 @@
-namespace: "{{ name_prefix }}-frontend"
+namespace_name: "{{ name_prefix }}-frontend"
 app_name: "{{ name_prefix }}-frontend"
 deployment_name: "{{ app_name }}-deploy"
 service_name: "{{ app_name }}-svc"
