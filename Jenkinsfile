@@ -53,6 +53,15 @@ pipeline {
             }
         }
 
+	stage('Setup Ansible') {
+	    steps {
+		sh '''
+		    pip3 install --user ansible kubernetes openshift
+		    ansible-galaxy collection install community.kubernetes
+		'''
+	    }
+	}
+
 	stage('Deploy via Ansible') {
 	    steps {
 		withCredentials([string(credentialsId: 'ansible-frontendvault-pass', variable: 'VAULT_PASS')]) {
