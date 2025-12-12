@@ -4,48 +4,56 @@
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/namespace.yml.j2') }}"
+    verify_ssl: no
 
 - name: Apply frontend secret
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/frontend-secret.yaml') }}"
+    verify_ssl: no
 
 - name: Ensure frontend ResourceQuota exists
   community.kubernetes.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/resourcequota.yml.j2') }}"
+    verify_ssl: no
 
 - name: Apply frontend Deployment
   community.kubernetes.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/deployment.yml.j2') }}"
+    verify_ssl: no
 
 - name: Apply frontend service
   community.kubernetes.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/service.yml.j2') }}"
+    verify_ssl: no
 
 - name: Apply frontend Ingress 
   community.kubernetes.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/ingress.yml.j2') }}"
+    verify_ssl: no
 
 - name: Apply frontend HPA
   community.kubernetes.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/hpa.yml.j2') }}"
+    verify_ssl: no
 
 - name: Apply frontend NetworkPolicy 
   community.kubernetes.k8s:
     kubeconfig: "{{ kubeconfig }}"
     state: present
     definition: "{{ lookup('template', 'roles/frontend/templates/networkpolicy.yml.j2') }}"
+    verify_ssl: no
 
 - name: Force rollout of frontend deployment
   community.kubernetes.k8s:
