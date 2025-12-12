@@ -32,7 +32,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [API_KEY, setAPIKey] = useState("");
   useEffect(() => {
-	  fetch('/config.json")
+	  fetch("/config.json")
 		.then((r) => r.json())
 		.then((cfg) => {
 			console.log("Loaded API KEY:", cfg.apiKey);
