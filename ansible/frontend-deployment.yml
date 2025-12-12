@@ -3,9 +3,8 @@
   gather_facts: false
 
   vars:
-    namespace: "{{ namespace | default('frontend') }}"
-    image: "{{ image | default('movie-frontend:latest') }}"
+    namespace: "{{ namespace | default('frontendns') }}"
+    image: "{{ image | default('cinesense-frontend:latest') }}"
 
-  roles:
-    - common
-    - frontend
+      #roles:
+      #- frontend
