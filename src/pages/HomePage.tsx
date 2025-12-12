@@ -72,7 +72,7 @@ export default function App() {
     };
 
     fetchMovies();
-  }, []);
+  }, [API_KEY]);
 
   const fetchRecommendations = async (title: string) => {
     try {
