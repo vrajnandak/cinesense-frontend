@@ -57,7 +57,6 @@ pipeline {
 	    steps {
 		echo "Setting up Python virtual environment for Ansible..."
 		sh '''
-		    bash -c "
 		    python3 -m venv ${ANSIBLE_VENV}
 		    . ${ANSIBLE_VENV}/bin/activate
                     pip install --upgrade pip
@@ -75,7 +74,6 @@ pipeline {
 			
 			// Write vault password to a temp file and use it
 			sh '''
-			    bash -c "
 			    . ${ANSIBLE_VENV}/bin/activate
 			    VAULT_FILE=$(mktemp)
 			    echo "$VAULT_PASS" > $VAULT_FILE
