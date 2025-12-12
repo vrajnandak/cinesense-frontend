@@ -55,9 +55,13 @@ pipeline {
 
 	stage('Setup Ansible') {
 	    steps {
+		echo "Setting up Python virtual environment for Ansible..."
 		sh '''
-		    pip3 install --user ansible kubernetes openshift
-		    ansible-galaxy collection install community.kubernetes
+		    python3 -m venv ~/.ansible-venv
+                    source ~/.ansible-venv/bin/activate
+                    pip install --upgrade pip
+                    pip install ansible kubernetes openshift
+                    ansible-galaxy collection install community.kubernetes
 		'''
 	    }
 	}
@@ -70,6 +74,7 @@ pipeline {
 			
 			// Write vault password to a temp file and use it
 			sh '''
+			    source ~/.ansible-venv/bin/activate
 			    VAULT_FILE=$(mktemp)
 			    echo "$VAULT_PASS" > $VAULT_FILE
 			    ansible-playbook -i ansible/inventory.ini ansible/site.yml --vault-password-file $VAULT_FILE
