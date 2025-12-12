@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Replace with your OMDb API key
 const API_KEY = "faa1f45c";
